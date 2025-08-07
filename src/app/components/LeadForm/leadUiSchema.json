@@ -1,0 +1,40 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/first_name"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/last_name"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/email"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/country_of_citizenship",
+      "label": "Country of Citizenship"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/website",
+      "label": "LinkedIn / Personal Website"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/visainterest",
+      "label": "Visa Categories of Interest"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/description",
+      "label": "What is your current status and when does it expire? What is your past immigration history? Are you looking for long-term permanent residency or short-term employment visa or both? Are there any timeline considerations?",
+      "options": {
+        "multi": true
+      }
+    }
+  ]
+}

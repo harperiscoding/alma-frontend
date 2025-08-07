@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "email": {
+      "type": "string",
+      "minLength": 1
+    },
+    "website": {
+      "type": "string",
+      "minLength": 1
+    },
+    "visainterest": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "O-1 Visa",
+          "EB-1A Visa",
+          "EB-2 NIW Visa",
+          "I don't know"
+        ]
+      }
+    },
+    "eb1a": {
+      "type": "boolean"
+    },
+    "eb2niw": {
+      "type": "boolean"
+    },
+    "unknown": {
+      "type": "boolean"
+    },
+    "country_of_citizenship": {
+      "type": "string",
+      "enum": ["Canada", "Mexico", "China"]
+    },
+    "description": {
+      "title": "Long Description",
+      "type": "string"
+    }
+  },
+  "required": ["first_name", "last_name", "email", "country_of_citizenship", "description"]
+}
