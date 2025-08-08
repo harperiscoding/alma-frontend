@@ -6,13 +6,13 @@ import { materialCells, materialRenderers } from '@jsonforms/material-renderers'
 import leadSchema from "./leadSchema.json";
 import leadUiSchema from "./leadUiSchema.json";
 import { useRouter } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
 import { Box, Button, Typography } from '@mui/material';
 
 export const LeadForm = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [formData, setFormData] = useState<any>({});
-  const [errors, setErrors] = useState<string | null>(null);
+  const [formData, setFormData] = useState<unknown>({});
+  const [errors, setErrors] = useState<unknown[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +41,6 @@ export const LeadForm = () => {
 
   const handleSubmit = async () => {
     setSubmitted(true);
-    const newLead = {
-      ...formData,
-      id: uuidv4(),
-      status: 'PENDING',
-      submittedAt: new Date().toISOString()
-    };
 
     try {
       // TODO: implement API endpoint to handle submission
@@ -56,35 +50,35 @@ export const LeadForm = () => {
       //   body: JSON.stringify(newLead)
       // });
 
-      if (true) {
+      if (errors.length === 0) {
         router.push('/thank-you');
       } else {
-        setErrors('Submission failed. Please try again.');
+        setErrorMessage('Submission failed. Please try again.');
       }
     } catch (error) {
       console.error(error);
-      setErrors('Something went wrong.');
+      setErrorMessage('Something went wrong.');
     }
   };
 
-  const [submitted, setSubmitted] = useState(false);
 
   return (
     <Box maxWidth={600} mx="auto" mt={6}>
       <Typography variant="h4" gutterBottom>
         Get An Assessment Of Your Immigration Case
       </Typography>
-
       <JsonForms
         schema={leadSchema}
         uischema={leadUiSchema}
         data={formData}
         renderers={materialRenderers}
         cells={materialCells}
-        onChange={({ data }) => setFormData(data)}
+        onChange={({ data, errors }) => {
+          setFormData(data)
+          setErrors(errors && errors.length > 0 ? errors : [])
+        }}
         validationMode={submitted ? 'ValidateAndShow' : 'ValidateAndHide'}
       />
-
       <Box mt={2}>
         <input
           type="file"
@@ -92,9 +86,7 @@ export const LeadForm = () => {
           onChange={handleFileChange}
         />
       </Box>
-
-      {errors && <Typography color="error">{errors}</Typography>}
-
+      {errorMessage && <Typography color="error">{errorMessage}</Typography>}
       <Box mt={3}>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           Submit
